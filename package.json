@@ -1,0 +1,26 @@
+{
+  "name": "notes-rest-api",
+  "version": "1.0.0",
+  "description": "fully authenticated rest api",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ArbazKhan-Developer/notes-rest-api.git"
+  },
+  "author": "Arbaz Khan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ArbazKhan-Developer/notes-rest-api/issues"
+  },
+  "homepage": "https://github.com/ArbazKhan-Developer/notes-rest-api#readme",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "mongodb": "^6.2.0",
+    "mongoose": "^7.6.3",
+    "validator": "^13.11.0"
+  }
+}
