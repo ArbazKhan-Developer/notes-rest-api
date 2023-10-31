@@ -25,14 +25,10 @@ mongoose
   });
 
 class mongoDal {
-  static async postData(data, collectionName, schema) {
+  static async postData(data, modal) {
     try {
-      console.log("request received" + data);
-      let Note =
-        mongoose.models[collectionName] ||
-        mongoose.model(collectionName, schema);
-      const parsedData = await utils.parseElement(data);
-      let res = await Note.create(parsedData);
+      console.log("request received" + JSON.stringify(data));
+      let res = await modal.create(data);
       return {
         statusCode: 201,
         body: {
@@ -41,7 +37,7 @@ class mongoDal {
         },
       };
     } catch (error) {
-      console.log("error occourred in catch block", error.statusCode);
+      console.log("error occourred in catch block", error.message);
       return {
         statusCode: 404,
         body: {
@@ -51,13 +47,9 @@ class mongoDal {
     }
   }
 
-  static async getData(collectionName, schema, queryParam) {
+  static async getData(modal, queryParam) {
     try {
-      let NoteData =
-        mongoose.models[collectionName] ||
-        mongoose.model(collectionName, schema);
-      const data = await NoteData.find(queryParam);
-      // console.log(data);
+      const data = await modal.find(queryParam);
       if (data.length == 0) {
         return {
           statusCode: 204,
@@ -72,31 +64,25 @@ class mongoDal {
         },
       };
     } catch (error) {
-      console.log("error occurred while fetching data from mongo", error.code);
-      throw error;
+      console.log("error occurred while fetching data from mongo", error.message);
+      return {
+        statusCode: 404,
+        body:{
+          message: error.message
+        }
+      }
     }
   }
 
-  static async deleteData(collectionName, schema, queryParam) {
+  static async deleteData(modal, queryParam) {
     try {
-      let NoteData =
-        mongoose.models[collectionName] ||
-        mongoose.model(collectionName, schema);
-      console.log(queryParam);
-      if (!queryParam.title) {
-        return {
-          statusCode: 203,
-          body: {
-            message: "queryParam is missing",
-          },
-        };
-      }
-      const data = await NoteData.findOneAndRemove(queryParam);
-      console.log(data);
+      const data = await modal.findOneAndRemove(queryParam);
       if (!data) {
         return {
           statusCode: 204,
-          body: "no record found for this queryParam",
+          body: {
+            message: "no record found for this queryParam"
+          },
         };
       }
       return {
@@ -107,28 +93,19 @@ class mongoDal {
         },
       };
     } catch (error) {
-      console.log("error occurred while deleting data from mongo", error.code);
-      throw error;
+      console.log("error occurred while deleting data from mongo", error.message);
+      return {
+        statusCode: 404,
+        body:{
+          message: error.message
+        }
+      }
     }
   }
 
-  static async updateData(update, collectionName, schema, queryParam) {
+  static async updateData(update, modal , queryParam) {
     try {
-      let NoteData =
-        mongoose.models[collectionName] ||
-        mongoose.model(collectionName, schema);
-      console.log(queryParam);
-      console.log("update", update);
-      if (!queryParam.title) {
-        return {
-          statusCode: 203,
-          body: {
-            message: "queryParam is missing",
-          },
-        };
-      }
-      const parsedData = await utils.parseElement(update);
-      const data = await NoteData.findOneAndUpdate(queryParam, parsedData, {
+      const data = await modal.findOneAndUpdate(queryParam, update, {
         returnOriginal: false,
       });
       return {
@@ -139,8 +116,13 @@ class mongoDal {
         },
       };
     } catch (error) {
-      console.log("error occurred while updating data from mongo", error.code);
-      throw error;
+      console.log("error occurred while updating data from mongo", error.message);
+      return {
+        statusCode: 404,
+        body: {
+          message: error.message
+        }
+      }
     }
   }
 }

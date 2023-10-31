@@ -18,7 +18,9 @@
   },
   "homepage": "https://github.com/ArbazKhan-Developer/notes-rest-api#readme",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.3.1",
+    "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.2.0",
     "mongoose": "^7.6.3",
     "validator": "^13.11.0"
