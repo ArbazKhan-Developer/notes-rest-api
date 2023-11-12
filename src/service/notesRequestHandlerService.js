@@ -30,7 +30,10 @@ class notesRequestHandlerService {
   static async getHandler(req, res) {
     try {
       const modal = await dbSchemaModal.notesModal();
-      const queryParam = { userId: req.userId };
+      console.log(`queryParam`, req.queryParam);
+      let regex = new RegExp(`^${req.queryParam.title}.*$`, "ig");
+      let queryParam = req.queryParam.title? { userId: req.userId, title: { $regex: regex }} : { userId: req.userId}
+      console.log(`queryParam`,  queryParam);
       const data = await mongoDal.getData(modal, queryParam);
       res.writeHead(data.statusCode, { "Content-Type": "application/json" });
       res.end(await utils.stringifyData(data.body));

@@ -49,7 +49,7 @@ class mongoDal {
 
   static async getData(modal, queryParam) {
     try {
-      const data = await modal.find(queryParam);
+      const data = await modal.find(queryParam).sort('-createdAt');
       if (data.length == 0) {
         return {
           statusCode: 204,
